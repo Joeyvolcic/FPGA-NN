@@ -6,13 +6,17 @@ use work.components.all;
 entity Hidden_Layer_Neuron is
     Port (activation_11, activation_12, activation_13, activation_14, activation_15, activation_16, activation_17, activation_18: in std_logic_vector(31 downto 0);
           initialize_W11,initialize_W12, initialize_W13, initialize_W14, initialize_W15, initialize_W16, initialize_W17, initialize_W18: in std_logic_vector(31 downto 0);
-          
+          load_weights: in STD_LOGIC;
+          sel_init: in STD_LOGIC;
           
           nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
           nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
-          learning_Rate: in std_logic_vector(31 downto 0)
+          learning_Rate: in std_logic_vector(31 downto 0);
 
-          sensitivity_out: out std_logic_vector(31 downto 0);
+          
+
+          sensitivity_out: out std_logic_vector(31 downto 0)
+          
           
 
           );
