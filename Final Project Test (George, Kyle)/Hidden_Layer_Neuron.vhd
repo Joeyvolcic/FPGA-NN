@@ -16,8 +16,9 @@ entity Hidden_Layer_Neuron is
           learning_Rate: in std_logic_vector(31 downto 0);
 
           
-
-          sensitivity_out: out std_logic_vector(31 downto 0)
+          --Outputs from hidden layer neuron
+          sensitivity_out: out std_logic_vector(31 downto 0);
+          activation_out: out std_logic_vector(31 downto 0)
 
           );
 end Hidden_Layer_Neuron;
@@ -32,15 +33,23 @@ signal sensitivity: std_logic_vector(31 downto 0);
 --FPassNeruon
 signal W1,W2,W3,W4,W5,W6,W7,W8: std_logic_vector(31 downto 0);
 signal a1,a2,a3,a4,a5,a6,a7,a8,aout: std_logic_vector(31 downto 0);
-signal a_prime: std_logic_vector(0 downto 0); --sweet
+signal a_prime: std_logic;
 
 --BPassNeuron
 signal activationPrev: std_logic_vector(31 downto 0);
 signal prevLayerSens: std_logic_vector(31 downto 0);
 
+--aPrimeReg
+signal aPrimeRegOut: std_logic;
+signal aPrimeLoad: std_logic;
+signal hold: std_logic;
+
+--aReg
+signal aRegOut: std_logic_vector(31 downto 0);
+signal aLoad: std_logic;
+
 begin
 sensitivity_out <= sensitivity;
--- Fix all inputs and ouputs for port maps only
 
 W1Blk: weight port map(initialize_Wij => initialize_W11, sensitivity => sensitivity, activation_L1 => activation_11,
                        learning_Rate => learning_Rate, Wij => W11, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
@@ -77,11 +86,19 @@ W8Blk: weight port map(initialize_Wij => initialize_W18, sensitivity => sensitiv
 FPassNeuron: Forward_Pass_Neuron_Hidden port map( W1 => W1, W2 => W2, W3 => W3, W4 => W4, W5 => W5, W6 => W6, W7 => W7, W8 => W8,
                                                   a1 => a1, a2 => a2, a3 => a3, a4 => a4, a5 => a5, a6 => a6, a7 => a7, a8 => a8,
                                                   aout => aout, a_Prime => a_Prime
-                                                  );
+                                                  );                                          
                                                   
 BPassNeuron: Back_Propagation_Neuron_Hidden port map(nextW1 => nextW1, nextW2 => nextW2, nextW3 => nextW3,
                                                      nextSens1 => nextSens1, nextSens2 => nextSens2, nextSens3 => nextSens3,
                                                      a_Prime => a_Prime, sensitivity => sensitivity
                                                      );
+
+aPrimeReg: Reg generic map(N => 2) port map(load => aPrimeLoad,input(1) => '0', input(0) => a_Prime, clk => clk, clr => clr, q(1) => hold, q(0) => aPrimeRegOut);
+
+
+aReg: Reg generic map(N => 32) port map(load => aLoad, input => aout, clk => clk, clr => clr, q => aRegOut);
+
+activation_out <= aRegOut;
+
 
 end Behavioral;

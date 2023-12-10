@@ -7,7 +7,7 @@ entity Forward_Pass_Neuron_Hidden is
     Port (W1,W2,W3,W4,W5,W6,W7,W8: in std_logic_vector(31 downto 0);
           a1,a2,a3,a4,a5,a6,a7,a8: in std_logic_vector(31 downto 0);
           aout: out std_logic_vector(31 downto 0);
-          a_prime: out std_logic_vector(0 downto 0) --sweet
+          a_prime: out std_logic
           );
 end Forward_Pass_Neuron_Hidden;
 
