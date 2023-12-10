@@ -89,15 +89,15 @@ package components is
     Port (W1,W2,W3,W4,W5,W6,W7,W8: in std_logic_vector(31 downto 0);
           a1,a2,a3,a4,a5,a6,a7,a8: in std_logic_vector(31 downto 0);
           aout: out std_logic_vector(31 downto 0);
-          a_Prime: out std_logic
+          a_Prime: out std_logic_vector(0 downto 0) --sweet
           );
     end component;
     
     component Back_Propagation_Neuron_Hidden is
-    Port (nextW1,nextW2,nextW3,nextW4,nextW5,nextW6,nextW7,nextW8: in std_logic_vector(31 downto 0);
-          nextSens1,nextSens2,nextSens3,nextSens4,nextSens5,nextSens6,nextSens7,nextSens8: in std_logic_vector(31 downto 0);
-          activationPrev: in std_logic_vector(31 downto 0);
-          prevLayerSens: out std_logic_vector(31 downto 0)
+    Port (nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
+          nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
+          a_prime: in std_logic_vector(0 downto 0); --sweet
+          sensitivity: out std_logic_vector(31 downto 0)
           );
     end component;
 

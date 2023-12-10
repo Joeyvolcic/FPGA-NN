@@ -4,11 +4,13 @@ use IEEE.STD_LOGIC_SIGNED.ALL;
 use work.components.all;
 
 entity Hidden_Layer_Neuron is
-    Port (activation_11, activation_12, activation_13, activation_14, activation_15, activation_16, activation_17, activation_18: in std_logic_vector(31 downto 0);
+    Port (-- Forward Propagation
+          activation_11, activation_12, activation_13, activation_14, activation_15, activation_16, activation_17, activation_18: in std_logic_vector(31 downto 0);
           initialize_W11,initialize_W12, initialize_W13, initialize_W14, initialize_W15, initialize_W16, initialize_W17, initialize_W18: in std_logic_vector(31 downto 0);
-          load_weights: in STD_LOGIC;
+          load_Wij: in STD_LOGIC;
           sel_init: in STD_LOGIC;
           
+          --Back Propagation
           nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
           nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
           learning_Rate: in std_logic_vector(31 downto 0);
@@ -16,8 +18,6 @@ entity Hidden_Layer_Neuron is
           
 
           sensitivity_out: out std_logic_vector(31 downto 0)
-          
-          
 
           );
 end Hidden_Layer_Neuron;
@@ -26,12 +26,13 @@ architecture Behavioral of Hidden_Layer_Neuron is
 
 --W1Blk
 signal W11,W12,W13,W14,W15,W16,W17,W18:std_logic_vector(31 downto 0);
-signal sel_init,load_Wij,clr,clk: std_logic;
+signal clr,clk: std_logic;
+signal sensitivity: std_logic_vector(31 downto 0);
 
 --FPassNeruon
 signal W1,W2,W3,W4,W5,W6,W7,W8: std_logic_vector(31 downto 0);
 signal a1,a2,a3,a4,a5,a6,a7,a8,aout: std_logic_vector(31 downto 0);
-signal a_Prime: std_logic;
+signal a_prime: std_logic_vector(0 downto 0); --sweet
 
 --BPassNeuron
 signal activationPrev: std_logic_vector(31 downto 0);

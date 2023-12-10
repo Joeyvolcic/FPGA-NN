@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_SIGNED.ALL;
 entity Back_Propagation_Neuron_Hidden is
     Port (nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
           nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
-          a_prime: in std_logic;
+          a_prime: in std_logic_vector(0 downto 0); --sweet
           sensitivity: out std_logic_vector(31 downto 0)
           );
 end Back_Propagation_Neuron_Hidden;
@@ -26,7 +26,8 @@ temp <= m1 + m2 + m3;
 
 sum <= temp(31 downto 0);
 
-tempSens <= activationPrev * sum;
+
+tempSens <= a_prime * sum;
 
 sensitivity <= tempSens (31 downto 0);
 
