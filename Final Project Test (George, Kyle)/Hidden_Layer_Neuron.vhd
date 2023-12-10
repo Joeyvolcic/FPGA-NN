@@ -38,7 +38,7 @@ signal activationPrev: std_logic_vector(31 downto 0);
 signal prevLayerSens: std_logic_vector(31 downto 0);
 
 begin
-sensitivity_out <= sensitivity
+sensitivity_out <= sensitivity;
 -- Fix all inputs and ouputs for port maps only
 
 W1Blk: weight port map(initialize_Wij => initialize_W11, sensitivity => sensitivity, activation_L1 => activation_11,
@@ -80,7 +80,7 @@ FPassNeuron: Forward_Pass_Neuron_Hidden port map( W1 => W1, W2 => W2, W3 => W3, 
                                                   
 BPassNeuron: Back_Propagation_Neuron_Hidden port map(nextW1 => nextW1, nextW2 => nextW2, nextW3 => nextW3,
                                                      nextSens1 => nextSens1, nextSens2 => nextSens2, nextSens3 => nextSens3,
-                                                     activationPrev => a_Prime, prevLayerSens => prevLayerSens
+                                                     a_Prime => a_Prime, sensitivity => sensitivity
                                                      );
 
 end Behavioral;
