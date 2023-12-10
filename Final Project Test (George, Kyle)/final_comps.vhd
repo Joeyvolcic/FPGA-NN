@@ -18,6 +18,13 @@ package components is
         );
     end component;
     
+    component Final_Layer_Sensitivity is
+      Port (perdicted_value: in STD_LOGIC_VECTOR(31 downto 0);
+            target_value: in STD_LOGIC_VECTOR(31 downto 0);
+            sensitivityL: out STD_LOGIC_VECTOR(31 downto 0)
+            );
+    end component;
+    
     
     component clkdiv is
          port(
