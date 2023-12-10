@@ -18,9 +18,7 @@ signal mul1,mul2,mul3,mul4,mul5,mul6,mul7,mul8: std_logic_vector(63 downto 0);
 signal temp: std_logic_vector(63 downto 0);
 
 begin
-
-RLU: ReLu port map(sum => sum, a => aout, a_Prime => a_Prime);
-
+    
 mul1 <= W1 * a1;
 mul2 <= W2 * a2;
 mul3 <= W3 * a3;
@@ -33,5 +31,7 @@ mul8 <= W8 * a8;
 temp <= mul1 + mul2 + mul3 + mul4 + mul5 + mul6 + mul7 + mul8;
 
 sum <= temp(31 downto 0);
+
+RLU: ReLu port map(sum => sum, a => aout, a_Prime => a_Prime);
 
 end Behavioral;
