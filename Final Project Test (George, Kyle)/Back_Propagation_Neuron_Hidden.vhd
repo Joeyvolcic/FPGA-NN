@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_SIGNED.ALL;
 entity Back_Propagation_Neuron_Hidden is
     Port (nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
           nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
-          a_prime: in std_logic_vector(31 downto 0);
+          a_prime: in std_logic;
           sensitivity: out std_logic_vector(31 downto 0)
           );
 end Back_Propagation_Neuron_Hidden;
