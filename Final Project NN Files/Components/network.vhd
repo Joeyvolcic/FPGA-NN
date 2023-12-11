@@ -79,7 +79,7 @@ generate_hidden_neuron: for i in 0 to 5 generate
                                               activation_15 => predicted_b2_reg, activation_16 => predicted_g2_reg, activation_17 => predicted_g_reg, activation_18 => predicted_r2_reg,
                                               initialize_W11 => init_array_weights(i)(0), initialize_W12 => init_array_weights(i)(1),initialize_W13 => init_array_weights(i)(2),initialize_W14 => init_array_weights(i)(3),
                                               initialize_W15 => init_array_weights(i)(4), initialize_W16 => init_array_weights(i)(5),initialize_W17 => init_array_weights(i)(6),initialize_W18 => init_array_weights(i)(7),
-                                              Load_Wij => load_hidden, sel_init => sel_init, 
+                                              Load_Wij => load_hidden, sel_init => sel_init, clk => clk, clr => clr
     );
 end generate generate_hidden_neuron;
 
