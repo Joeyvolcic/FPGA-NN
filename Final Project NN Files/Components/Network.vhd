@@ -40,7 +40,7 @@ SIGNAL last_layer_sensitivity : hidden_to_last_array_layer;
 
 SIGNAL hidden_layer_activations: hidden_to_last_array_activation_neuron;
 
-SIGNAL load_Wij: STD_LOGIC;
+SIGNAL load_Wij,aLoadSig: STD_LOGIC;
 
 SIGNAL sel_init: STD_LOGIC;
 SIGNAL load_inputs: STD_LOGIC;
@@ -103,7 +103,7 @@ generate_output_neuron: for i in 0 to 2 generate -- go over arrays to make sure 
     output_neuron: Output_Layer_Neuron port map(activation_21 => hidden_layer_activations(0), activation_22 => hidden_layer_activations(1), activation_23 => hidden_layer_activations(2), activation_24 => hidden_layer_activations(3),
                                                 activation_25 => hidden_layer_activations(4), activation_26 => hidden_layer_activations(5), initialize_W21 => last_layer_weight(i)(0), initialize_W22 => last_layer_weight(i)(1),
                                                 initialize_W23 => last_layer_weight(i)(2),initialize_W24 => last_layer_weight(i)(3),initialize_W25 => last_layer_weight(i)(4), initialize_W26 => last_layer_weight(i)(5),
-                                                load_Wij => load_Wij, sel_init => sel_init, clk => clk, clr => clr, learning_Rate => learning_Rate, targetR => target_color(i), predictedR => predicted_color(i)                                 
+                                                load_Wij => load_Wij, sel_init => sel_init, clk => clk, clr => clr, learning_Rate => learning_Rate, targetR => target_color(i), predictedR => predicted_color(i), aLoad => aLoadSig
                                                 );
 
 end generate generate_output_neuron;

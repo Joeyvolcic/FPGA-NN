@@ -63,6 +63,7 @@ package components is
           load_Wij: in STD_LOGIC;
           sel_init: in STD_LOGIC;
           clk,clr: in STD_LOGIC;
+          aLoad: in STD_LOGIC;
           learning_Rate: in std_logic_vector(31 downto 0);
           
           --Back Propagation

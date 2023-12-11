@@ -10,6 +10,8 @@ entity Output_Layer_Neuron is
           load_Wij: in STD_LOGIC;
           sel_init: in STD_LOGIC;
           clk,clr: in STD_LOGIC;
+          aLoad: in STD_LOGIC;
+         
           learning_Rate: in std_logic_vector(31 downto 0);
           
           --Back Propagation
@@ -17,6 +19,7 @@ entity Output_Layer_Neuron is
           
           --Outputs for Final Layer Neuron
           predictedR: out STD_LOGIC_VECTOR(31 downto 0) -- aout
+          
           );
 end Output_Layer_Neuron;
 
@@ -37,7 +40,6 @@ signal prevLlayerSens: std_logic_vector(31 downto 0);
 
 --aReg
 signal aRegOut: std_logic_vector(31 downto 0);
-signal aLoad: std_logic;
 
 --BiasReg
 signal load_Bij: std_logic;
@@ -79,7 +81,7 @@ begin
     
     FLayerSensBlk: Final_Layer_Sensitivity port map(perdicted_value => aRegOut, target_value => targetR, sensitivityL => sensitivity);
     
-    BiasReg: Bias port map(initialize_Bij => "X"00000000", sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
+    BiasReg: Bias port map(initialize_Bij => X"00000000", sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
                            sensitivity => sensitivity, learning_Rate => learning_Rate, Bij => Bij
                            );
     
