@@ -19,9 +19,21 @@ package components is
     end component;
     
     component Final_Layer_Sensitivity is
-      Port (perdicted_value: in STD_LOGIC_VECTOR(31 downto 0);
-            target_value: in STD_LOGIC_VECTOR(31 downto 0);
-            sensitivityL: out STD_LOGIC_VECTOR(31 downto 0)
+        Port (perdicted_value: in STD_LOGIC_VECTOR(31 downto 0);
+             target_value: in STD_LOGIC_VECTOR(31 downto 0);
+             sensitivityL: out STD_LOGIC_VECTOR(31 downto 0)
+            );
+    end component;
+    
+    component Bias is
+      Port (initialize_Bij: in std_logic_vector(15 downto 0);
+            sel_init: in std_logic;
+            load_Bij: in std_logic;
+            clr: in std_logic;
+            clk: in std_logic;
+            sensitivity: in std_logic_vector(15 downto 0);
+            learning_Rate: in std_logic_vector(15 downto 0);
+            Bij: out std_logic_vector(15 downto 0)
             );
     end component;
     
@@ -44,6 +56,23 @@ package components is
         );
     end component;
     
+    component Output_Layer_Neuron is
+    Port (-- Forward Propagation
+          activation_21, activation_22, activation_23, activation_24, activation_25, activation_26: in std_logic_vector(31 downto 0);
+          initialize_W21,initialize_W22, initialize_W23, initialize_W24, initialize_W25, initialize_W26: in std_logic_vector(31 downto 0);
+          load_Wij: in STD_LOGIC;
+          sel_init: in STD_LOGIC;
+          clk,clr: in STD_LOGIC;
+          learning_Rate: in std_logic_vector(31 downto 0);
+          
+          --Back Propagation
+          targetR: in STD_LOGIC_VECTOR(31 downto 0); -- From picture
+          
+          --Outputs for Final Layer Neuron
+          predictedR: out STD_LOGIC_VECTOR(31 downto 0) -- aout
+          );
+    end component;
+        
     component Reg is
     generic (N: integer);
     port(
@@ -109,18 +138,5 @@ package components is
               a_prime: out std_logic
               );
     end component;   
-    
-    component Bias is
-      Port (initialize_Bij: in std_logic_vector(15 downto 0);
-            sel_init: in std_logic;
-            load_Bij: in std_logic;
-            clr: in std_logic;
-            clk: in std_logic;
-            sensitivity: in std_logic_vector(15 downto 0);
-            learning_Rate: in std_logic_vector(15 downto 0);
-            Bij: out std_logic_vector(15 downto 0)
-            );
-    end component;
-
 
 end components;
