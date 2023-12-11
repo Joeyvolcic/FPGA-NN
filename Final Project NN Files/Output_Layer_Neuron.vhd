@@ -39,6 +39,11 @@ signal prevLlayerSens: std_logic_vector(31 downto 0);
 signal aRegOut: std_logic_vector(31 downto 0);
 signal aLoad: std_logic;
 
+--BiasReg
+signal load_Bij: std_logic;
+signal initialize_Bij: std_logic_vector(31 downto 0); -- may need to be an input to neuron
+signal Bij: std_logic_vector(31 downto 0);
+
 begin
 
     W1Blk: weight port map(initialize_Wij => initialize_W21, sensitivity => sensitivity, activation_L1 => activation_21,
@@ -73,6 +78,10 @@ begin
     aReg: Reg generic map(N => 32) port map(load => aLoad, input => aout, clk => clk, clr => clr, q => aRegOut);
     
     FLayerSensBlk: Final_Layer_Sensitivity port map(perdicted_value => aRegOut, target_value => targetR, sensitivityL => sensitivity);
+    
+    BiasReg: Bias port map(initialize_Bij => "0", sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
+                           sensitivity => sensitivity, learning_Rate => learning_Rate, Bij => Bij
+                           );
     
     predictedR <= aRegOut;
 

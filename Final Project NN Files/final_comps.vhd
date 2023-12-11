@@ -26,14 +26,14 @@ package components is
     end component;
     
     component Bias is
-      Port (initialize_Bij: in std_logic_vector(15 downto 0);
+      Port (initialize_Bij: in std_logic_vector(31 downto 0);
             sel_init: in std_logic;
             load_Bij: in std_logic;
             clr: in std_logic;
             clk: in std_logic;
-            sensitivity: in std_logic_vector(15 downto 0);
-            learning_Rate: in std_logic_vector(15 downto 0);
-            Bij: out std_logic_vector(15 downto 0)
+            sensitivity: in std_logic_vector(31 downto 0);
+            learning_Rate: in std_logic_vector(31 downto 0);
+            Bij: out std_logic_vector(31 downto 0)
             );
     end component;
     
@@ -130,13 +130,31 @@ package components is
           );
     end component;
     
-    
     component Output_Layer_Forward_Pass_Neuron is
         Port (W1,W2,W3,W4,W5,W6: in std_logic_vector(31 downto 0);
               a1,a2,a3,a4,a5,a6: in std_logic_vector(31 downto 0);
               aout: out std_logic_vector(31 downto 0);
               a_prime: out std_logic
               );
-    end component;   
-
+    end component;  
+    
+    component Hidden_Layer_Neuron is
+        Port (-- Forward Propagation
+              activation_11, activation_12, activation_13, activation_14, activation_15, activation_16, activation_17, activation_18: in std_logic_vector(31 downto 0);
+              initialize_W11,initialize_W12, initialize_W13, initialize_W14, initialize_W15, initialize_W16, initialize_W17, initialize_W18: in std_logic_vector(31 downto 0);
+              load_Wij: in STD_LOGIC;
+              sel_init: in STD_LOGIC;
+              clr,clk: in std_logic;
+              
+              --Back Propagation
+              nextW1,nextW2,nextW3: in std_logic_vector(31 downto 0);
+              nextSens1,nextSens2,nextSens3: in std_logic_vector(31 downto 0);
+              learning_Rate: in std_logic_vector(31 downto 0);
+    
+              
+              --Outputs from hidden layer neuron
+              sensitivity_out: out std_logic_vector(31 downto 0);
+              activation_out: out std_logic_vector(31 downto 0)
+              ); 
+    end component;        
 end components;

@@ -25,7 +25,7 @@ m3 <= nextW3 * nextSens3;
 
 temp <= m1 + m2 + m3;
 
-sum <= temp(55 downto 24);
+sum <= temp(31 downto 0);
 
 process(a_prime)
 begin
@@ -36,6 +36,6 @@ begin
     end if;
 end process;
 
-sensitivity <= tempSens;
+sensitivity <= tempSens (31 downto 0);
 
 end Behavioral;

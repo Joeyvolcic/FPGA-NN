@@ -6,28 +6,28 @@ use work.components.all;
 
 
 entity Bias is
-  Port (initialize_Bij: in std_logic_vector(15 downto 0);
+  Port (initialize_Bij: in std_logic_vector(31 downto 0);
         sel_init: in std_logic;
         load_Bij: in std_logic;
         clr: in std_logic;
         clk: in std_logic;
-        sensitivity: in std_logic_vector(15 downto 0);
-        learning_Rate: in std_logic_vector(15 downto 0);
-        Bij: out std_logic_vector(15 downto 0)
+        sensitivity: in std_logic_vector(31 downto 0);
+        learning_Rate: in std_logic_vector(31 downto 0);
+        Bij: out std_logic_vector(31 downto 0)
         );
 end Bias;
 
 architecture Behavioral of Bias is
 
 signal muxOut: std_logic_vector(31 downto 0);
-signal new_Bij: std_logic_vector(31 downto 0);
+signal new_Bij: std_logic_vector(63 downto 0);
 signal Bias_ij: std_logic_vector(31 downto 0);
 signal multOut: std_logic_vector(63 downto 0);
 
 
 begin
 
-mux88: Mux2to1 generic map(N => 32) port map(a => new_Bij(15 downto 0), b => initialize_Bij, s => sel_init, y => muxOut);
+mux88: Mux2to1 generic map(N => 32) port map(a => new_Bij(31 downto 0), b => initialize_Bij, s => sel_init, y => muxOut);
 Regx: Reg generic map(N => 32) port map(load => Load_Bij, input => muxOut, clk => clk, clr => clr, q => Bias_ij);
 
 multOut <= sensitivity * learning_Rate;
