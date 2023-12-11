@@ -30,6 +30,9 @@ signal W11,W12,W13,W14,W15,W16,W17,W18:std_logic_vector(31 downto 0);
 signal clr,clk: std_logic;
 signal sensitivity: std_logic_vector(31 downto 0);
 
+--BIAS
+signal Bias:std_logic_vector(31 downto 0);
+
 --FPassNeruon
 signal W1,W2,W3,W4,W5,W6,W7,W8: std_logic_vector(31 downto 0);
 signal a1,a2,a3,a4,a5,a6,a7,a8,aout: std_logic_vector(31 downto 0);
@@ -81,7 +84,9 @@ W7Blk: weight port map(initialize_Wij => initialize_W17, sensitivity => sensitiv
                        
 W8Blk: weight port map(initialize_Wij => initialize_W18, sensitivity => sensitivity, activation_L1 => activation_18,
                        learning_Rate => learning_Rate, Wij => W18, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
-                       );                       
+                       );        
+                       
+BiasBLK: Bias port map(initialize_Bij => initialize_Bij, sel_init => sel_init, load_Bij => load_Bij, clr => clr, clk => clk, sensitivity => sensitivity, learning_Rate => learning_Rate, Bij => B);       
                                                               
 FPassNeuron: Forward_Pass_Neuron_Hidden port map( W1 => W1, W2 => W2, W3 => W3, W4 => W4, W5 => W5, W6 => W6, W7 => W7, W8 => W8,
                                                   a1 => a1, a2 => a2, a3 => a3, a4 => a4, a5 => a5, a6 => a6, a7 => a7, a8 => a8,
