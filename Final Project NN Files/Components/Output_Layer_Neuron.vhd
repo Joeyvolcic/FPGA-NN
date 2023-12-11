@@ -79,7 +79,7 @@ begin
     
     FLayerSensBlk: Final_Layer_Sensitivity port map(perdicted_value => aRegOut, target_value => targetR, sensitivityL => sensitivity);
     
-    BiasReg: Bias port map(initialize_Bij => "0", sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
+    BiasReg: Bias port map(initialize_Bij => "X"00000000", sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
                            sensitivity => sensitivity, learning_Rate => learning_Rate, Bij => Bij
                            );
     
