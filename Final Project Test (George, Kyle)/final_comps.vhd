@@ -109,5 +109,18 @@ package components is
               a_prime: out std_logic
               );
     end component;   
+    
+    component Bias is
+      Port (initialize_Bij: in std_logic_vector(15 downto 0);
+            sel_init: in std_logic;
+            load_Bij: in std_logic;
+            clr: in std_logic;
+            clk: in std_logic;
+            sensitivity: in std_logic_vector(15 downto 0);
+            learning_Rate: in std_logic_vector(15 downto 0);
+            Bij: out std_logic_vector(15 downto 0)
+            );
+    end component;
+
 
 end components;
