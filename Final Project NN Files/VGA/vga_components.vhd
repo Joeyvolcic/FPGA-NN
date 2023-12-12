@@ -24,32 +24,32 @@ component vga_bsprite is
     port ( vidon: in std_logic;
            hc : in std_logic_vector(9 downto 0);
            vc : in std_logic_vector(9 downto 0);
-           M,M2: in std_logic_vector(7 downto 0);
+           M: in std_logic_vector(11 downto 0);
            sw: in std_logic_vector(7 downto 0);
            rom_addr16: out std_logic_vector(15 downto 0);
-           red : out std_logic_vector(2 downto 0);
-           green : out std_logic_vector(2 downto 0);
-           blue : out std_logic_vector(1 downto 0)
+           red : out std_logic_vector(3 downto 0);
+           green : out std_logic_vector(3 downto 0);
+           blue : out std_logic_vector(3 downto 0)
 	);
 end component;
 
-component rom_140x140 IS
-  PORT (
-    clka : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-  );
-END component;
+--component rom_140x140 IS
+--  PORT (
+--    clka : IN STD_LOGIC;
+--    addra : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
+--    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+--  );
+--END component;
+
+--component blk_mem_gen_0 IS
+--  PORT (
+--    clka : IN STD_LOGIC;
+--    addra : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
+--    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+--  );
+--END component;
 
 component blk_mem_gen_0 IS
-  PORT (
-    clka : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(14 DOWNTO 0);
-    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-  );
-END component;
-
-component ten IS
   PORT (
     clka : IN STD_LOGIC;
     addra : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
@@ -57,12 +57,18 @@ component ten IS
   );
 END component;
 
---component ten IS
---  PORT (
---    clka : IN STD_LOGIC;
---    addra : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
---    douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
---  );
---END component;
+component DPRam is
+     PORT (
+    a : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
+    d : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+    dpra : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
+    clk : IN STD_LOGIC;
+    we : IN STD_LOGIC;
+    spo : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+    dpo : OUT STD_LOGIC_VECTOR(11 DOWNTO 0)
+  );
+end component;
+
+
 
 end package;
