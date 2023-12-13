@@ -30,7 +30,7 @@ mul8 <= W8 * a8;
 
 temp <= mul1 + mul2 + mul3 + mul4 + mul5 + mul6 + mul7 + mul8;
 
-sum <= temp(31 downto 0);
+sum <= temp(55 downto 24);
 
 RLU: ReLu port map(sum => sum, a => aout, a_Prime => a_Prime);
 

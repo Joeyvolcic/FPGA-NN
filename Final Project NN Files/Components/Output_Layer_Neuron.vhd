@@ -11,7 +11,6 @@ entity Output_Layer_Neuron is
           sel_init: in STD_LOGIC;
           clk,clr: in STD_LOGIC;
           aLoad: in STD_LOGIC;
-         
           learning_Rate: in std_logic_vector(31 downto 0);
           
           --Back Propagation
@@ -19,7 +18,6 @@ entity Output_Layer_Neuron is
           
           --Outputs for Final Layer Neuron
           predictedR: out STD_LOGIC_VECTOR(31 downto 0) -- aout
-          
           );
 end Output_Layer_Neuron;
 

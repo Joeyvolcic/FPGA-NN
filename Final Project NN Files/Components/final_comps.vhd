@@ -25,6 +25,24 @@ package components is
             );
     end component;
     
+    component vga_bsprite_top is
+         port(
+            mclk : in STD_LOGIC;
+            btn : in STD_LOGIC_VECTOR(3 downto 0);
+            sw : in STD_LOGIC_VECTOR(7 downto 0);
+            a : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
+            d : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+            we : IN STD_LOGIC;
+            spo : OUT STD_LOGIC_VECTOR(11 DOWNTO 0);
+            hsync : out STD_LOGIC;
+            vsync : out STD_LOGIC;
+            red : out std_logic_vector(3 downto 0);
+            green : out std_logic_vector(3 downto 0);
+            blue : out std_logic_vector(3 downto 0);
+            clk25OUT: out STD_LOGIC
+             );
+    end component;
+    
     component Bias is
       Port (initialize_Bij: in std_logic_vector(31 downto 0);
             sel_init: in std_logic;
@@ -61,9 +79,8 @@ package components is
           activation_21, activation_22, activation_23, activation_24, activation_25, activation_26: in std_logic_vector(31 downto 0);
           initialize_W21,initialize_W22, initialize_W23, initialize_W24, initialize_W25, initialize_W26: in std_logic_vector(31 downto 0);
           load_Wij: in STD_LOGIC;
-          sel_init: in STD_LOGIC;
+          sel_init,aLoad: in STD_LOGIC;
           clk,clr: in STD_LOGIC;
-          aLoad: in STD_LOGIC;
           learning_Rate: in std_logic_vector(31 downto 0);
           
           --Back Propagation
@@ -154,8 +171,29 @@ package components is
     
               
               --Outputs from hidden layer neuron
+              aLoad: in std_logic;
               sensitivity_out: out std_logic_vector(31 downto 0);
               activation_out: out std_logic_vector(31 downto 0)
               ); 
     end component;        
+    
+    component NNControl is
+    PORT ( clk : in STD_LOGIC;
+           clr : in STD_LOGIC;
+           hsync : in STD_LOGIC;
+           vsync : in STD_LOGIC;
+           ram_we : out STD_LOGIC;
+           load_inputs : out STD_LOGIC;
+           x : inout STD_LOGIC_VECTOR(15 downto 0);
+           y : inout STD_LOGIC_VECTOR(15 downto 0);
+           rom_addr16I: in std_logic_vector(15 downto 0);
+           rom_addr16O : out STD_LOGIC_VECTOR (15 downto 0);
+           sel_init : out STD_LOGIC;
+           aLoad : out STD_LOGIC;
+           load_hidden : out STD_LOGIC;
+           load_hidden_activation : out STD_LOGIC;
+           load_output_activation : out STD_LOGIC;
+           load_rgb : out STD_LOGIC;
+           load_output : out STD_LOGIC);
+end component;
 end components;

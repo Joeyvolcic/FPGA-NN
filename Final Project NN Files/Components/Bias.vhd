@@ -20,21 +20,21 @@ end Bias;
 architecture Behavioral of Bias is
 
 signal muxOut: std_logic_vector(31 downto 0);
-signal new_Bij: std_logic_vector(63 downto 0);
+signal new_Bij: std_logic_vector(31 downto 0);
 signal Bias_ij: std_logic_vector(31 downto 0);
 signal multOut: std_logic_vector(63 downto 0);
 
 
 begin
 
-mux88: Mux2to1 generic map(N => 32) port map(a => new_Bij(31 downto 0), b => initialize_Bij, s => sel_init, y => muxOut);
-Regx: Reg generic map(N => 32) port map(load => Load_Bij, input => muxOut, clk => clk, clr => clr, q => Bias_ij);
+initialization_max: Mux2to1 generic map(N => 32) port map(a => new_Bij(31 downto 0), b => initialize_Bij, s => sel_init, y => muxOut);
+bias_register: Reg generic map(N => 32) port map(load => Load_Bij, input => muxOut, clk => clk, clr => clr, q => Bias_ij);
 
 multOut <= sensitivity * learning_Rate;
 
-new_Bij <= multOut - Bias_ij;
+new_Bij <= multOut(55 downto 24) - Bias_ij;
 
 
-Bij <= new_Bij(31 downto 0);
+Bij <= new_Bij;
 
 end Behavioral;

@@ -18,6 +18,7 @@ entity Hidden_Layer_Neuron is
 
           
           --Outputs from hidden layer neuron
+          aLoad: in std_logic;
           sensitivity_out: out std_logic_vector(31 downto 0);
           activation_out: out std_logic_vector(31 downto 0)
 
@@ -31,80 +32,79 @@ signal W11,W12,W13,W14,W15,W16,W17,W18:std_logic_vector(31 downto 0);
 signal sensitivity: std_logic_vector(31 downto 0);
 
 --FPassNeruon
-signal W1,W2,W3,W4,W5,W6,W7,W8: std_logic_vector(31 downto 0);
-signal a1,a2,a3,a4,a5,a6,a7,a8,aout: std_logic_vector(31 downto 0);
 signal a_prime: std_logic;
+signal aout: std_logic_vector(31 downto 0);
 
 --BPassNeuron
-signal activationPrev: std_logic_vector(31 downto 0);
-signal prevLayerSens: std_logic_vector(31 downto 0);
+--signal activationPrev: std_logic_vector(31 downto 0);
+--signal prevLayerSens: std_logic_vector(31 downto 0);
 
 --aPrimeReg
 signal aPrimeRegOut: std_logic;
-signal aPrimeLoad: std_logic;
+--signal aPrimeLoad: std_logic;
 signal hold: std_logic;
 
 --aReg
 signal aRegOut: std_logic_vector(31 downto 0);
-signal aLoad: std_logic;
+
 
 --BiasReg
-signal load_Bij: std_logic;
-signal initialize_Bij: std_logic_vector(31 downto 0); -- may need to be an input to neuron
+--signal load_Bij: std_logic;
+--signal initialize_Bij: std_logic_vector(31 downto 0); -- may need to be an input to neuron
 signal Bij: std_logic_vector(31 downto 0);
 
 begin
     sensitivity_out <= sensitivity;
     
-    W1Blk: weight port map(initialize_Wij => initialize_W11, sensitivity => sensitivity, activation_L1 => activation_11,
+    Weight_1: weight port map(initialize_Wij => initialize_W11, sensitivity => sensitivity, activation_L1 => activation_11,
                            learning_Rate => learning_Rate, Wij => W11, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );
                            
-    W2Blk: weight port map(initialize_Wij => initialize_W12, sensitivity => sensitivity, activation_L1 => activation_12,
+    Weight_2: weight port map(initialize_Wij => initialize_W12, sensitivity => sensitivity, activation_L1 => activation_12,
                            learning_Rate => learning_Rate, Wij => W12, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );
     
-    W3Blk: weight port map(initialize_Wij => initialize_W13, sensitivity => sensitivity, activation_L1 => activation_13,
+    Weight_3: weight port map(initialize_Wij => initialize_W13, sensitivity => sensitivity, activation_L1 => activation_13,
                            learning_Rate => learning_Rate, Wij => W13, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );
                            
-    W4Blk: weight port map(initialize_Wij => initialize_W14, sensitivity => sensitivity, activation_L1 => activation_14,
+    Weight_4: weight port map(initialize_Wij => initialize_W14, sensitivity => sensitivity, activation_L1 => activation_14,
                            learning_Rate => learning_Rate, Wij => W14, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );  
                            
-    W5Blk: weight port map(initialize_Wij => initialize_W15, sensitivity => sensitivity, activation_L1 => activation_15,
+    Weight_5: weight port map(initialize_Wij => initialize_W15, sensitivity => sensitivity, activation_L1 => activation_15,
                            learning_Rate => learning_Rate, Wij => W15, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );     
     
-    W6Blk: weight port map(initialize_Wij => initialize_W16, sensitivity => sensitivity, activation_L1 => activation_16,
+    Weight_6: weight port map(initialize_Wij => initialize_W16, sensitivity => sensitivity, activation_L1 => activation_16,
                            learning_Rate => learning_Rate, Wij => W16, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );
     
-    W7Blk: weight port map(initialize_Wij => initialize_W17, sensitivity => sensitivity, activation_L1 => activation_17,
+    Weight_7: weight port map(initialize_Wij => initialize_W17, sensitivity => sensitivity, activation_L1 => activation_17,
                            learning_Rate => learning_Rate, Wij => W17, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );
                            
-    W8Blk: weight port map(initialize_Wij => initialize_W18, sensitivity => sensitivity, activation_L1 => activation_18,
+    Weight_8: weight port map(initialize_Wij => initialize_W18, sensitivity => sensitivity, activation_L1 => activation_18,
                            learning_Rate => learning_Rate, Wij => W18, sel_init => sel_init, load_Wij => load_Wij, clr => clr, clk => clk
                            );                       
                                                                   
-    FPassNeuron: Forward_Pass_Neuron_Hidden port map( W1 => W1, W2 => W2, W3 => W3, W4 => W4, W5 => W5, W6 => W6, W7 => W7, W8 => W8,
-                                                      a1 => a1, a2 => a2, a3 => a3, a4 => a4, a5 => a5, a6 => a6, a7 => a7, a8 => a8,
+    Forward_pass_multiplier: Forward_Pass_Neuron_Hidden port map( W1 => W11, W2 => W12, W3 => W13, W4 => W14, W5 => W15, W6 => W16, W7 => W17, W8 => W18,
+                                                      a1 => activation_11, a2 => activation_12, a3 => activation_13, a4 => activation_14, a5 => activation_15, a6 => activation_16, a7 => activation_17, a8 => activation_18,
                                                       aout => aout, a_Prime => a_Prime
                                                       );                                          
                                                       
-    BPassNeuron: Back_Propagation_Neuron_Hidden port map(nextW1 => nextW1, nextW2 => nextW2, nextW3 => nextW3,
+    Backward_pass_multiplier: Back_Propagation_Neuron_Hidden port map(nextW1 => nextW1, nextW2 => nextW2, nextW3 => nextW3,
                                                          nextSens1 => nextSens1, nextSens2 => nextSens2, nextSens3 => nextSens3,
                                                          a_Prime => a_Prime, sensitivity => sensitivity
                                                          );
     
-    aPrimeReg: Reg generic map(N => 2) port map(load => aPrimeLoad,input(1) => '0', input(0) => a_Prime, clk => clk, clr => clr, q(1) => hold, q(0) => aPrimeRegOut);
+    activation_prime_register: Reg generic map(N => 2) port map(load => aLoad,input(1) => '0', input(0) => a_Prime, clk => clk, clr => clr, q(1) => hold, q(0) => aPrimeRegOut);
     
     
-    aReg: Reg generic map(N => 32) port map(load => aLoad, input => aout, clk => clk, clr => clr, q => aRegOut);
+    activation_register: Reg generic map(N => 32) port map(load => aLoad, input => aout, clk => clk, clr => clr, q => aRegOut);
     
 
-    BiasReg: Bias port map(initialize_Bij => (others => '0'), sel_init => sel_init, load_Bij => load_Bij, clk => clk, clr => clr,
+    neuron_bias: Bias port map(initialize_Bij => (others => '0'), sel_init => sel_init, load_Bij => load_Wij, clk => clk, clr => clr,
                            sensitivity => sensitivity, learning_Rate => learning_Rate, Bij => Bij
                            );
 

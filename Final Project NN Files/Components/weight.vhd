@@ -27,12 +27,12 @@ signal multOut: std_logic_vector(95 downto 0);
 
 begin
 
-mux88: Mux2to1 generic map(N => 32) port map(a => new_Wij, b => initialize_Wij, s => sel_init, y => muxOut);
-Regx: Reg generic map(N => 32) port map(load => Load_Wij, input => muxOut, clk => clk, clr => clr, q => Weight_ij);
+initialization_mux: Mux2to1 generic map(N => 32) port map(a => new_Wij, b => initialize_Wij, s => sel_init, y => muxOut);
+weight_register: Reg generic map(N => 32) port map(load => Load_Wij, input => muxOut, clk => clk, clr => clr, q => Weight_ij);
 
 multOut <= activation_L1 * sensitivity * learning_Rate;
 
-new_Wij <= multOut(31 downto 0) - Weight_ij;
+new_Wij <= Weight_ij - multOut(79 downto 48);
 
 
 Wij <= new_Wij;

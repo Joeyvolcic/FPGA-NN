@@ -1,66 +1,106 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_SIGNED.ALL;
 
+entity NNControl is
+    Port ( clk : in STD_LOGIC;
+           clr : in STD_LOGIC;
+           hsync : in STD_LOGIC;
+           vsync : in STD_LOGIC;
+           ram_we : out STD_LOGIC;
+           load_inputs : out STD_LOGIC;
+           x : inout STD_LOGIC_VECTOR(15 downto 0);
+           y : inout STD_LOGIC_VECTOR(15 downto 0);
+           rom_addr16I: in std_logic_vector(15 downto 0);
+           rom_addr16O : out STD_LOGIC_VECTOR (15 downto 0);
+           sel_init : out STD_LOGIC;
+           aLoad : out STD_LOGIC;
+           load_hidden : out STD_LOGIC;
+           load_hidden_activation : out STD_LOGIC;
+           load_output_activation : out STD_LOGIC;
+           load_rgb : out STD_LOGIC;
+           load_output : out STD_LOGIC);
+end NNControl;
 
-entity network_state_machine is
-  Port (clk, clr: in STD_LOGIC;
-        go: in STD_LOGIC);
-end network_state_machine;
+architecture Behavioral of NNControl is
 
-architecture Behavioral of network_state_machine is
-type state_type is (s0, s1, s2, s3, s4);
-signal present_state, next_state: state_type;
+type state is (Initialize, WaitState, ForwardPass1, ForwardPass2, DoneForwardPass, BackPass1, BackPass2, Done, checkY);
+signal s: state;
+
+signal xsig, ysig, rom_addr16: STD_LOGIC_VECTOR(15 downto 0);
+
 begin
-sreg: process(clk, clr)
-    begin
-        if clr = '1' then
-                present_state <= s0;
-        elsif clk'event and clk = '1' then
-                present_state <= next_state;
-        end if;
-    end process;
-    C1: process(present_state, go)
-    begin
-      case present_state is
-        when s0 =>
-          if go = '1' then
-            next_state <= s1;
-          else
-            next_state <= s0;
-          end if;
-        when s1 =>
 
-            next_state <= s2;
-            when s2 =>
-          if din = '0' then
-            next_state <= s3;
-          else
-            next_state <= s2;
-          end if;
-        when s3 =>
-          if din = '1' then
-            next_state <= s1;
-          else
-            next_state <= s0;
-          end if;	  	  
-        when others =>
-          null;
-      end case;
-    end process;
-    Seq2: process(clk, clr)
-    begin
-        if clr = '1' then
-                dout <= '0';
-        elsif clk'event and clk = '1' then
-            if present_state = s3 and din = '1' then
-                    dout <= '1';
-            else
-                    dout <= '0';
-            end if;
-        end if;
-    end process;
-    end seqdetb;
-    
+rom_addr16 <= rom_addr16I;
+
+Trans: process (clr, clk, hsync, vsync, x, y)
+	begin
+		if clr = '1' then
+			s <= Initialize;
+		elsif (clk'event and clk = '1') then
+			case s is
+				when Initialize =>
+					s <= WaitState;
+				when WaitState =>
+					if hsync = '0' and vsync = '0' then 
+					   s <= ForwardPass1;
+					else
+					   s <= WaitState;
+					end if;
+				when ForwardPass1 =>
+					s <= ForwardPass2;					
+				when ForwardPass2 =>
+					s <= DoneForwardPass;					
+				when DoneForwardPass =>
+					s <= BackPass1;					
+				when BackPass1 =>
+					s <= BackPass2;					
+				when BackPass2 =>
+					s <= Done;					
+				when Done =>
+					if x < "1010" then
+					   s <= ForwardPass1;
+					else
+					   s <= checkY;
+					end if;					
+				when checkY =>
+					if y < "1010" then 
+					   s <= ForwardPass1;
+					else 
+					   s <= WaitState;
+					end if;
+			end case;			
+		end if;		
+	end process;
+	
+Output: process (y)
+	begin
+		rom_addr16O <= x"0000"; sel_init <= '0'; load_hidden <= '0'; load_hidden_activation <= '0'; load_output_activation <= '0'; load_rgb <= '0'; load_output <= '0'; 
+		case s is
+			when Initialize =>
+				rom_addr16O <= x"0000"; sel_init <= '1'; load_hidden <= '1'; load_hidden_activation <= '1'; load_output_activation <= '1'; load_rgb <= '1'; load_output <= '1'; load_inputs <= '1'; 
+			when WaitState =>
+			    x <= x"0000"; y <= x"0000";
+			when ForwardPass1 =>
+			    load_hidden_activation <= '1';
+			when ForwardPass2 =>
+			    load_output_activation <= '1';
+			when DoneForwardPass =>
+			    load_rgb <= '1';
+			    aLoad <= '1';
+			when BackPass1 =>
+			    load_hidden <= '1';
+			when BackPass2 =>
+			    load_output <= '1';
+			when Done =>
+			    ram_we <= '1'; load_inputs <= '1'; rom_addr16O <= rom_addr16 + '1';
+			when checkY =>
+			    if y < "1010" then
+			       x <= x"0000";
+			    end if;
+			when others => 
+		end case;
+	end process;
 
 
 end Behavioral;
